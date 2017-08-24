@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletResponse;
+
 import org.apache.commons.io.FilenameUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,18 +16,28 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.qianlixy.framework.upload.FilePersistenceHandler;
+import com.qianlixy.framework.upload.exception.LimitSizeException;
+import com.qianlixy.framework.upload.utils.FileSizeUtil;
 import com.qianlixy.framework.upload.vo.UploadResult;
 
 @RestController("defaultController")
-@RequestMapping("/")
-public class DefaultController {
+@RequestMapping("/upload")
+public class UploadController {
+	
+	private static final String PARAM_FILE_LIMIT_SIZE = "limitSize";
 	
 	@Autowired
 	private FilePersistenceHandler fileHandler;
 	
-	private static final Logger log = LoggerFactory.getLogger(DefaultController.class);
+	private static final Logger log = LoggerFactory.getLogger(UploadController.class);
 
-	private UploadResult upload(MultipartFile file) {
+	private UploadResult uploadFile(MultipartFile file, String limitSize) {
+		if(null != limitSize) {
+			long limit = FileSizeUtil.toSize(limitSize);
+			if(limit > 0 && limit < file.getSize()) {
+				throw new LimitSizeException("The file size is greater than " + FileSizeUtil.prettySize(limit));
+			}
+		}
 		UploadResult ur = new UploadResult();
 		try {
 			String path = fileHandler.persistence(file);
@@ -42,14 +54,24 @@ public class DefaultController {
 		return ur;
 	}
 	
-	@RequestMapping("upload")
-	public List<UploadResult> multiUpload(MultipartHttpServletRequest request) {
+	@RequestMapping("")
+	public Object multiUpload(MultipartHttpServletRequest request, HttpServletResponse response) {
+		String limitSize = request.getParameter(PARAM_FILE_LIMIT_SIZE);
 		Map<String, MultipartFile> fileMap = request.getFileMap();
 		List<UploadResult> results = new ArrayList<>();
 		for(String param : fileMap.keySet()) {
-			MultipartFile multipartFile = fileMap.get(param);
-			results.add(upload(multipartFile));
+			MultipartFile file = fileMap.get(param);
+			if(!file.isEmpty()) {
+				try {
+					results.add(uploadFile(file, limitSize));
+				} catch (LimitSizeException e) {
+					results.add(new UploadResult(false, e.getMessage()));
+				} catch (Exception e) {
+					results.add(new UploadResult(false, "Unknown reason"));
+				}
+			}
 		}
+		if(results.size() == 1) return results.get(0);
 		return results;
 	}
 	

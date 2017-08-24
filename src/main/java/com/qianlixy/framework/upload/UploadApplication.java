@@ -6,6 +6,7 @@ import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
+import com.qianlixy.framework.upload.intercepter.CommonIntercepter;
 import com.qianlixy.framework.upload.intercepter.ValidateIntercepter;
 
 @SpringBootApplication
@@ -32,7 +33,8 @@ public class UploadApplication extends WebMvcConfigurerAdapter {
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
 		//验证拦截器
-		registry.addInterceptor(new ValidateIntercepter());
+		registry.addInterceptor(new CommonIntercepter());
+		registry.addInterceptor(new ValidateIntercepter()).addPathPatterns("/upload");
 		super.addInterceptors(registry);
 	}
 	

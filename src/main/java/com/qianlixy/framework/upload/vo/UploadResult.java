@@ -1,8 +1,15 @@
 package com.qianlixy.framework.upload.vo;
 
-import java.text.DecimalFormat;
+import com.qianlixy.framework.upload.utils.FileSizeUtil;
 
 public class UploadResult {
+	
+	public UploadResult() {}
+	
+	public UploadResult(Boolean result, String message) {
+		this.result = result;
+		this.message = message;
+	}
 
 	private Boolean result;
 	private String message;
@@ -55,18 +62,10 @@ public class UploadResult {
 		if (null != prettySize) {
 			return prettySize;
 		}
-		DecimalFormat df = new DecimalFormat("#.00");
-		String fileSizeString = "";
-		if (fileSize < 1024) {
-			fileSizeString = df.format((double) fileSize) + "B";
-		} else if (fileSize < 1048576) {
-			fileSizeString = df.format((double) fileSize / 1024) + "K";
-		} else if (fileSize < 1073741824) {
-			fileSizeString = df.format((double) fileSize / 1048576) + "M";
-		} else {
-			fileSizeString = df.format((double) fileSize / 1073741824) + "G";
+		if(null == fileSize) {
+			return null;
 		}
-		return fileSizeString;
+		return FileSizeUtil.prettySize(fileSize);
 	}
 
 	public void setPrettySize(String prettySize) {

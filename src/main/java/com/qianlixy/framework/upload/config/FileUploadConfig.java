@@ -7,15 +7,15 @@ import org.springframework.context.annotation.Configuration;
 @ConfigurationProperties("file.upload")
 public class FileUploadConfig {
 	
-	private String path;
+	private String rootPath;
 	private String handler;
 
-	public String getPath() {
-		return path;
+	public String getRootPath() {
+		return rootPath;
 	}
 
-	public void setPath(String path) {
-		this.path = path;
+	public void setRootPath(String rootPath) {
+		this.rootPath = rootPath;
 	}
 
 	public String getHandler() {

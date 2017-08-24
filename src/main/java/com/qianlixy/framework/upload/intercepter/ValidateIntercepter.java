@@ -14,7 +14,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.qianlixy.framework.upload.utils.ResponseUtil;
 
 public class ValidateIntercepter implements HandlerInterceptor {
-
+	
 	@Override
 	public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex)
 			throws Exception {
@@ -40,7 +40,7 @@ public class ValidateIntercepter implements HandlerInterceptor {
 			for(String param : fileMap.keySet()) {
 				if(!fileMap.get(param).isEmpty()) return true;
 			}
-			ResponseUtil.reponseText(response, HttpServletResponse.SC_BAD_REQUEST, "The file is required");
+			ResponseUtil.responseText(response, HttpServletResponse.SC_BAD_REQUEST, "The file is required");
 			return false;
 		}
 		return false;

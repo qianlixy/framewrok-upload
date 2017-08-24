@@ -46,11 +46,11 @@ public class DefaultFilePersistenceHandler implements FilePersistenceHandler {
 				}
 			}
 		}
-		return path.replace(config.getPath(), "");
+		return path.replace(config.getRootPath(), "");
 	}
 
 	private String getAbsolutePath() {
-		String directory = config.getPath() 
+		String directory = config.getRootPath() 
 				+ "/"
 				+ directoryFormater.format(new Date()).toString() 
 				+ "/";
