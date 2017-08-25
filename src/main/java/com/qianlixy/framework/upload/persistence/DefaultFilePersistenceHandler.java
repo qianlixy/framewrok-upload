@@ -31,7 +31,8 @@ public class DefaultFilePersistenceHandler implements FilePersistenceHandler {
 		FileOutputStream fos = null;
 		try {
 			fos = new FileOutputStream(file);
-			fos.write(multipartFile.getBytes());
+			byte[] bytes = multipartFile.getBytes();
+			fos.write(bytes);
 		} catch (FileNotFoundException e) {
 			throw e;
 		} catch (IOException e) {
@@ -46,7 +47,8 @@ public class DefaultFilePersistenceHandler implements FilePersistenceHandler {
 				}
 			}
 		}
-		return path.replace(config.getRootPath(), "");
+		String newPath = path.replace(config.getRootPath(), "");
+		return newPath.substring(0, newPath.lastIndexOf(".")) + "?s=" + extension;
 	}
 
 	private String getAbsolutePath() {

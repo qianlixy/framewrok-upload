@@ -16,10 +16,10 @@ public class FileSizeUtilTest {
 //		System.out.println(FileSizeUtil.prettySize(FileSizeUtil.toSize("11M")));
 //		System.out.println(FileSizeUtil.prettySize(FileSizeUtil.toSize("11G")));
 //		System.out.println(FileSizeUtil.prettySize(FileSizeUtil.toSize("11T")));
-		System.out.println(FileSizeUtil.prettySize(FileSizeUtil.toSize("11k")));
-		System.out.println(FileSizeUtil.prettySize(FileSizeUtil.toSize("11m")));
-		System.out.println(FileSizeUtil.prettySize(FileSizeUtil.toSize("11g")));
-		System.out.println(FileSizeUtil.prettySize(FileSizeUtil.toSize("11t")));
+		System.out.println(FileSizeUtil.prettySize(FileSizeUtil.toSize("31064k")));
+		System.out.println(FileSizeUtil.prettySize(FileSizeUtil.toSize("191903k")));
+		System.out.println(FileSizeUtil.prettySize(FileSizeUtil.toSize("892688k")));
+		System.out.println(FileSizeUtil.prettySize(FileSizeUtil.toSize("4064690k")));
 	}
 	
 }

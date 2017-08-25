@@ -11,17 +11,19 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.qianlixy.framework.upload.FilePersistenceHandler;
 import com.qianlixy.framework.upload.exception.LimitSizeException;
 import com.qianlixy.framework.upload.utils.FileSizeUtil;
 import com.qianlixy.framework.upload.vo.UploadResult;
 
 @RestController("defaultController")
-@RequestMapping("/upload")
 public class UploadController {
 	
 	private static final String PARAM_FILE_LIMIT_SIZE = "limitSize";
@@ -54,8 +56,8 @@ public class UploadController {
 		return ur;
 	}
 	
-	@RequestMapping("")
-	public Object multiUpload(MultipartHttpServletRequest request, HttpServletResponse response) {
+	@RequestMapping(value="upload",method=RequestMethod.POST)
+	public String multiUpload(MultipartHttpServletRequest request, HttpServletResponse response) {
 		String limitSize = request.getParameter(PARAM_FILE_LIMIT_SIZE);
 		Map<String, MultipartFile> fileMap = request.getFileMap();
 		List<UploadResult> results = new ArrayList<>();
@@ -71,8 +73,11 @@ public class UploadController {
 				}
 			}
 		}
-		if(results.size() == 1) return results.get(0);
-		return results;
+		
+		if(results.size() == 1){
+			return JSONObject.toJSONString(results.get(0));
+		}
+		return JSONArray.toJSONString(results);
 	}
 	
 }

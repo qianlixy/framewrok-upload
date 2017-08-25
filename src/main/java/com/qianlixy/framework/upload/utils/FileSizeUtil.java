@@ -53,12 +53,12 @@ public class FileSizeUtil {
 		Matcher matcher = Pattern.compile("^[\\d]+([KMGTB]{0,2})$", Pattern.CASE_INSENSITIVE)
 				.matcher(sizeStr);
 		if(!matcher.find()) {
-			throw new InvalidFileSizeException("Invalid size of file : '" + sizeStr + "'");
+			throw new InvalidFileSizeException("Invalid file size : '" + sizeStr + "'");
 		}
 		String suffix = matcher.group(1).toUpperCase();
 		Long cardinal = fileSizeMap.get(suffix.contains(FILE_SUFFIX_B) ? suffix : suffix + FILE_SUFFIX_B);
 		if(null == cardinal) {
-			throw new InvalidFileSizeException("Invalid size of file : '" + sizeStr + "'");
+			throw new InvalidFileSizeException("Invalid file size : '" + sizeStr + "'");
 		}
 		return Long.valueOf(sizeStr.toUpperCase().replace(suffix, "")) * cardinal;
 	}

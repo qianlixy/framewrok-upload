@@ -36,13 +36,26 @@ public class DownloadController {
 		}
 		File file = new File(FilenameUtils.concat(config.getRootPath(), path + "/" + filename));
 		try {
-			ResponseUtil.responseFile(response, file, downloadFileName);
+			ResponseUtil.responseDownloadFile(request, response, file, downloadFileName);
 		} catch (FileNotFoundException e) {
-			try {
-				ResponseUtil.responseText(response, HttpServletResponse.SC_NOT_FOUND, "Not found file : " + filename);
-			} catch (IOException e1) {
-				e1.printStackTrace();
-			}
+			ResponseUtil.responseText(response, HttpServletResponse.SC_NOT_FOUND, "Not found file : " + filename);
+		} catch (IOException e) {
+			ResponseUtil.responseText(response, HttpServletResponse.SC_INTERNAL_SERVER_ERROR, e.getMessage());
+		}
+	}
+	
+	@RequestMapping("/preview/{path}/{filename}")
+	public void preview(HttpServletRequest request, HttpServletResponse response,
+			@PathVariable String path,	@PathVariable String filename,
+			@RequestParam(value="s", required=true) String suffix) {
+		filename = filename + "." + suffix;
+		File file = new File(FilenameUtils.concat(config.getRootPath(), path + "/" + filename));
+		try {
+			ResponseUtil.responseFile(response, file);
+		} catch (FileNotFoundException e) {
+			ResponseUtil.responseText(response, HttpServletResponse.SC_NOT_FOUND, "Not found file : " + filename);
+		} catch (IOException e) {
+			ResponseUtil.responseText(response, HttpServletResponse.SC_INTERNAL_SERVER_ERROR, e.getMessage());
 		}
 	}
 }
