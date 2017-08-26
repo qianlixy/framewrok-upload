@@ -27,7 +27,9 @@ public class MD5Util {
         	ex.printStackTrace();
         } finally {
             try {
-                fis.close();
+            	if(null != fis) {
+            		fis.close();
+            	}
             } catch (IOException ex) {
             	ex.printStackTrace();
             }

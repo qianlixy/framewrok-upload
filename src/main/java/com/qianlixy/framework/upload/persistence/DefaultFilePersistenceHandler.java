@@ -16,16 +16,13 @@ import com.qianlixy.framework.upload.config.FileUploadConfig;
 
 public class DefaultFilePersistenceHandler implements FilePersistenceHandler {
 	
-	private static SimpleDateFormat directoryFormater = new SimpleDateFormat("yyyy-MM-dd");
-	private static SimpleDateFormat fileNameFormater = new SimpleDateFormat("HHmmssSSS");
-
 	@Autowired
 	private FileUploadConfig config;
 	
 	@Override
 	public String persistence(MultipartFile multipartFile) throws IOException {
 		String extension = FilenameUtils.getExtension(multipartFile.getOriginalFilename());
-		String path = getAbsolutePath() + fileNameFormater.format(new Date()).toString()
+		String path = getAbsolutePath() + new SimpleDateFormat("HHmmssSSS").format(new Date()).toString()
 				+ (extension.length() == 0 ? "" : "." + extension);
 		File file = new File(path);
 		FileOutputStream fos = null;
@@ -54,7 +51,7 @@ public class DefaultFilePersistenceHandler implements FilePersistenceHandler {
 	private String getAbsolutePath() {
 		String directory = config.getRootPath() 
 				+ "/"
-				+ directoryFormater.format(new Date()).toString() 
+				+ new SimpleDateFormat("yyyy-MM-dd").format(new Date()).toString() 
 				+ "/";
 		File file = new File(directory);
 		if(!file.exists()) {

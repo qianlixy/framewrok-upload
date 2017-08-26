@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
-    <script type="text/javascript">
+    <!-- <script type="text/javascript">
     	function upload_success() {
     		var frame = document.getElementById("frame");
     		var jsonStr = frame.contentWindow.document.body.innerHTML;
@@ -26,16 +26,43 @@
 				}
     		}
     	}
-    </script>
+    </script> -->
 </head>
 <body>
     <form class="" action="/upload" method="post" target="frame" enctype="multipart/form-data">
-        <input type="file" name="file" value="">
+        <input type="file" id="file" name="file" value="">
         <input type="file" name="file1" value="">
         <input type="text" name="limitSize" value="" placeholder="文件限制大小">
         <input type="submit" name="" value="上传">
     </form>
-    <iframe id="frame" src="about:blank" width="100%" height="" name="frame" onload="upload_success()"></iframe>
+    <!-- <iframe id="frame" src="about:blank" width="100%" height="" name="frame" onload="upload_success()"></iframe> -->
     <div id="down"></div>
+
+    <script src="/static/js/jquery-1.11.3.min.js" charset="utf-8"></script>
+    <script src="/static/js/file-upload-1.0.0.js" charset="utf-8"></script>
+
+    <script type="text/javascript">
+        $.fileupload({
+            success:function(data) {
+            	var down = document.getElementById("down");
+        		if(data.length) {
+        			for(var i=0; i<data.length; i++) {
+    					if(data[i].result) {
+    	    				down.innerHTML += "<a href='/download"+data[i].imagePath+"&n="+encodeURI("测试")+"' target='_blank'>下载</a> ";
+    	    				down.innerHTML += "<a href='/preview"+data[i].imagePath+"' target='_blank'>预览</a><br>";
+    					}
+        			}
+        		} else {
+        			if(data.result) {
+        				down.innerHTML += "<a href='/download"+data.imagePath+"&n="+encodeURI("测试")+"' target='_blank'>下载</a> ";
+        				down.innerHTML += "<a href='/preview"+data.imagePath+"' target='_blank'>预览</a><br>";
+    				}
+        		}
+            },
+            error:function(e) {
+            	console.log(e);
+            }
+        });
+    </script>
 </body>
 </html>
