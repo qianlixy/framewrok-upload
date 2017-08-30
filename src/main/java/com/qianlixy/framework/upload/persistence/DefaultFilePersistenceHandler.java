@@ -51,7 +51,7 @@ public class DefaultFilePersistenceHandler implements FilePersistenceHandler {
 	private String getAbsolutePath() {
 		String directory = config.getRootPath() 
 				+ "/"
-				+ new SimpleDateFormat("yyyy-MM-dd").format(new Date()).toString() 
+				+ new SimpleDateFormat("yyyyMMdd").format(new Date()).toString() 
 				+ "/";
 		File file = new File(directory);
 		if(!file.exists()) {

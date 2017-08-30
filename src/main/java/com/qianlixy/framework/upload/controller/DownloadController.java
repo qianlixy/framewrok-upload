@@ -44,7 +44,7 @@ public class DownloadController {
 		}
 	}
 	
-	@RequestMapping("/preview/{path}/{filename}")
+	@RequestMapping("/{path:\\d+}/{filename}")
 	public void preview(HttpServletRequest request, HttpServletResponse response,
 			@PathVariable String path,	@PathVariable String filename,
 			@RequestParam(value="s", required=true) String suffix) {
