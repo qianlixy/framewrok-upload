@@ -7,7 +7,7 @@
     <title>Document</title>
 </head>
 <body>
-    <form class="" action="/upload" method="post" target="frame" enctype="multipart/form-data">
+    <form class="" action="http://localhost:8082/upload" method="post" target="frame" enctype="multipart/form-data">
         <input type="file" id="file" name="file" value="">
         <input type="file" name="file1" value="">
         <input type="text" name="limitSize" value="" placeholder="文件限制大小">
@@ -21,6 +21,7 @@
 
     <script type="text/javascript">
         $.fileupload({
+        	action:"http://localhost:8082/upload",
             fileId:'upload-file',
             success:function(data) {
             	var down = document.getElementById("down");

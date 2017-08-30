@@ -29,6 +29,7 @@ public class ValidateIntercepter implements HandlerInterceptor {
 
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+		if(!(request instanceof MultipartHttpServletRequest)) return true;
 		MultipartHttpServletRequest multipartReq = (MultipartHttpServletRequest) request;
 		return validateRequiredParam(multipartReq, response);
 	}

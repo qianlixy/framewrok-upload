@@ -1,0 +1,15 @@
+server:
+  port: 8082
+
+file:
+  upload:
+    rootPath: E:/upload
+    handler: com.qianlixy.framework.upload.persistence.DefaultFilePersistenceHandler
+    allowedOrigins: 
+      - http://localhost:8083
+
+spring:
+  http:
+    multipart:
+      maxFileSize: 100Mb
+      maxRequestSize: 100Mb
