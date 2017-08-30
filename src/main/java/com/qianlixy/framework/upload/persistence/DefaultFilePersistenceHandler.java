@@ -55,7 +55,11 @@ public class DefaultFilePersistenceHandler implements FilePersistenceHandler {
 				+ "/";
 		File file = new File(directory);
 		if(!file.exists()) {
-			file.mkdirs();
+			synchronized (DefaultFilePersistenceHandler.class) {
+				if(!file.exists()) {
+					file.mkdirs();
+				}
+			}
 		}
 		return directory;
 	}
